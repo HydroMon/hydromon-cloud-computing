@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 let authRoutes = require('./authRoutes');
+let hidroponikRoutes = require('./hidroponikRoutes');
 
 router.get('/', function(req, res) {
     const ready = {
@@ -12,5 +13,6 @@ router.get('/', function(req, res) {
 });
 
 router.use('/auth', authRoutes);
+router.use('/hidroponik', hidroponikRoutes);
 
 module.exports = router;
