@@ -7,7 +7,7 @@ async function registrasi (req, res) {
         const password = passwordHash.generate(req.body.password);
 
         // check user's email whether it is already used or not
-        let checkEmail = await firestore.collection('users').where('email', '==', req.body.email).get();
+        let checkEmail = await firestore.collection('user').where('email', '==', req.body.email).get();
 
         if(!checkEmail.empty) {
             return res.status(403).json({
@@ -18,7 +18,7 @@ async function registrasi (req, res) {
 
         // save user's data
         let user = {
-            nama: req.body.nama,
+            nama_lengkap: req.body.nama_lengkap,
             email: req.body.email,
             password: password,
             username: req.body.username,
@@ -46,7 +46,7 @@ async function registrasi (req, res) {
 async function login (req, res) {
     try {
         // check user's data in database
-        let checkUser = await firestore.collection('users').where('email', '==', req.body.email).get();
+        let checkUser = await firestore.collection('user').where('email', '==', req.body.email).get();
 
         if(checkUser.empty) {
             return res.status(404).json({
