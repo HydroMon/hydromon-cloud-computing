@@ -12,7 +12,7 @@ async function registrasi (req, res) {
         if(!checkEmail.empty) {
             return res.status(403).json({
                 code: 403,
-                message: "Email is already used. Use another email."
+                status: "Email is already used. Use another email."
             })
         }
 
@@ -28,17 +28,17 @@ async function registrasi (req, res) {
             updatedAt: new Date()
         };
     
-        await firestore.collection('users').doc().set(user);
+        await firestore.collection('user').doc().set(user);
         
         return res.status(200).json({
             code: 200,
-            message: "Registration is successful."
+            status: "Registration is successful."
         });
 
     } catch(error) {
         return res.status(400).json({
             code: 400,
-            error: error.message
+            status: error.message
         })
     }
 }
@@ -51,7 +51,7 @@ async function login (req, res) {
         if(checkUser.empty) {
             return res.status(404).json({
                 code: 404,
-                message: 'No such user.'
+                status: 'No such user.'
             })
         }
 
@@ -80,18 +80,20 @@ async function login (req, res) {
             const token = jwt.sign({ userToken }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 
             return res.status(200).send({
+                code:200,
+                status: "Login is successful.",
                 token: token
             })
         } else {
             return res.status(422).send({
                 code: 422,
-                message: "Invalid password."
+                status: "Invalid password."
             })
         }
     } catch(error) {
         return res.status(400).json({
             code: 400,
-            error: error.message
+            status: error.message
         })
     }
 }
