@@ -2,7 +2,7 @@ POST http://localhost:5000/auth/register
 Content-Type: application/json
 
 {
-    "nama" : "Rosa Amalia",
+    "nama_lengkap" : "Rosa Amalia",
     "email" : "rosaamalia@mail.com",
     "password" : "password",
     "username" : "rosaamalia",
@@ -16,3 +16,33 @@ Content-Type: application/json
     "email" : "rosaamalia@mail.com",
     "password" : "password"
 }
+
+# Data Hidroponik
+
+POST http://localhost:5000/data
+Content-Type: application/json
+
+{
+    "id_hidroponik": "GFGdgJHjk",
+    "tds": 10,
+    "ph": 3,
+    "ec": 12,
+    "humidity": 78,
+    "temperature": 26,
+    "light_intense": 21,
+    "action": "pump",
+    "action_taken": ["pump"]
+}
+
+GET http://localhost:5000/data
+
+GET http://localhost:5000/data/0F9JOPHK8ST4Rys2eoKo
+
+PUT http://localhost:5000/data/0F9JOPHK8ST4Rys2eoKo
+Content-Type: application/json
+
+{
+    "tds": 6
+}
+
+DELETE http://localhost:5000/data/0F9JOPHK8ST4Rys2eoKo
