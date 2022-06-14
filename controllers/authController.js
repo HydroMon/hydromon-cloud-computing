@@ -29,10 +29,25 @@ async function registrasi (req, res) {
         };
     
         await firestore.collection('user').doc().set(user);
+        let dataUser = await firestore.collection('user').where('email', '==', req.body.email).get();
+        let data;
+        
+        dataUser.forEach( doc => {
+            data = {
+                id: doc.id,
+                nama_lengkap: doc.data().nama_lengkap,
+                email: doc.data().email,
+                password: doc.data().password,
+                username: doc.data().username,
+                telepon: doc.data().telepon,
+                role: doc.data().role
+            }
+        });
         
         return res.status(200).json({
             code: 200,
-            status: "Registration is successful."
+            status: "Registration is successful.",
+            data: data
         });
 
     } catch(error) {
