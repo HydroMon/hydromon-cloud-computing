@@ -84,9 +84,8 @@ async function list (req, res) {
 async function show (req, res) {
     try {
         const id = req.params.id;
-
+        
         const data = await firestore.collection('data_hidroponik').doc(id).get();
-        const subscriber = await firestore.collection('data_hidroponik').doc(id)
 
         if(!data.exists) {
             return res.status(404).json({
@@ -94,17 +93,39 @@ async function show (req, res) {
                 status: `Data with id ${id} is not found.`
             })
         } else {
-            subscriber.onSnapshot(docSnapshot=> {
-                return res.status(200).json({
-                            code: 200,
-                            status: `Data with id ${id} is found.`,
-                            data: docSnapshot.data()
-                        })
-              }, err => {
-                return res.status(500).send(err)
-              });
+            return res.status(200).json({
+                code: 200,
+                status: `Data with id ${id} is found.`,
+                data: data.data()
+            })            
         }
+    } catch(error) {
+        return res.status(400).json({
+            code: 400,
+            status: error.message
+        })
+    }
+}
 
+async function showNewestData (req, res) {
+    try {
+        const id_hidroponik = req.params.id_hidroponik;
+        // var dateNow =  formatDate(new Date())
+        var dateNow = "14.06.2022"
+        const newestData = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', "14.06.2022").orderBy('time').get();
+
+        if(!newestData.exists) {
+            return res.status(404).json({
+                code: 404,
+                status: `Newest data for id ${id_hidroponik} is not found.`
+            })
+        } else {
+            return res.status(200).json({
+                code: 200,
+                status: `Newest data for id ${id_hidroponik} is found.`,
+                data: newestData.data()
+            })   
+        }
     } catch(error) {
         return res.status(400).json({
             code: 400,
@@ -174,6 +195,7 @@ module.exports = {
     create,
     list,
     show,
+    showNewestData,
     update,
     remove
 }

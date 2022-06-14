@@ -13,6 +13,11 @@ router.get('/', dataHidroponikController.list);
 router.get('/:id', dataHidroponikController.show);
 
 /**
+ * Get hydroponic data by id
+ */
+router.get('/newest/:id_hidroponik', dataHidroponikController.showNewestData);
+
+/**
  * Add hydroponic data
  */
 router.post('/', dataHidroponikController.create);
