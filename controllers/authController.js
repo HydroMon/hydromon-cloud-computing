@@ -94,10 +94,14 @@ async function login (req, res) {
 
             const token = jwt.sign({ userToken }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 
+            // get user's data
+            const data = await firestore.collection('user').doc(userData[0].id).get();
+
             return res.status(200).send({
                 code:200,
                 status: "Login is successful.",
-                token: token
+                token: token,
+                data: data.data()
             })
         } else {
             return res.status(422).send({
