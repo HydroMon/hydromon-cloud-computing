@@ -16,6 +16,8 @@ async function create (req, res) {
             humidity: req.body.humidity,
             temperature: req.body.temperature,
             light_intense: req.body.light_intense,
+            label: req.body.label,
+            accuracy: req.body.accuracy,
             action: req.body.action,
             action_taken: req.body.action_taken
         }
@@ -56,6 +58,8 @@ async function list (req, res) {
                     doc.data().humidity,
                     doc.data().temperature,
                     doc.data().light_intense,
+                    doc.data().label,
+                    doc.data().accuracy,
                     doc.data().action,
                     doc.data().action_taken
                 );
@@ -82,18 +86,23 @@ async function show (req, res) {
         const id = req.params.id;
 
         const data = await firestore.collection('data_hidroponik').doc(id).get();
-        
+        const subscriber = await firestore.collection('data_hidroponik').doc(id)
+
         if(!data.exists) {
             return res.status(404).json({
                 code: 404,
                 status: `Data with id ${id} is not found.`
             })
         } else {
-            return res.status(200).json({
-                code: 200,
-                status: `Data with id ${id} is found.`,
-                data: data.data()
-            })
+            subscriber.onSnapshot(docSnapshot=> {
+                return res.status(200).json({
+                            code: 200,
+                            status: `Data with id ${id} is found.`,
+                            data: docSnapshot.data()
+                        })
+              }, err => {
+                return res.status(500).send(err)
+              });
         }
 
     } catch(error) {
