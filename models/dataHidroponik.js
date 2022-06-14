@@ -1,6 +1,6 @@
 class DataHidroponik {
     constructor(id, id_hidroponik, waktu, tds, ph,
-        ec, humidity, temperature, light_intense, action, action_taken) {
+        ec, humidity, temperature, light_intense, label, accuracy, action, action_taken) {
             this.id = id;
             this.id_hidroponik = id_hidroponik;
             this.waktu = waktu;
@@ -10,6 +10,8 @@ class DataHidroponik {
             this.humidity = humidity;
             this.temperature = temperature;
             this.light_intense = light_intense;
+            this.label = label;
+            this.accuracy = accuracy;
             this.action = action;
             this.action_taken = action_taken;
     }
