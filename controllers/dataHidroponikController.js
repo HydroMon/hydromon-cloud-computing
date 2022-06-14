@@ -175,6 +175,7 @@ async function currentDate (req, res) {
 
         let data = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', currDate).get();
 
+        let dataHidroponikArray = [];
         if(data.empty) {
             return res.status(404).json({
                 code: 404,
@@ -221,5 +222,6 @@ module.exports = {
     list,
     show,
     update,
-    remove
+    remove,
+    currentDate
 }
