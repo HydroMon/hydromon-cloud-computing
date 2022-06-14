@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "nama_lengkap" : "Rosa Amalia",
-    "email" : "rosaamalia@mail.com",
+    "email" : "rosaabanyaaaak@mail.com",
     "password" : "password",
     "username" : "rosaamalia",
     "telepon" : "0"
@@ -21,6 +21,7 @@ Content-Type: application/json
 
 POST http://localhost:5000/data
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVG9rZW4iOnsiaWQiOiI4c29lRDUzeWFGN2dDbkE1V1NRTiIsImVtYWlsIjoicm9zYWFtYWxpYUBtYWlsLmNvbSIsInVzZXJuYW1lIjoicm9zYWFtYWxpYSJ9LCJpYXQiOjE2NTUxNzQ0NTYsImV4cCI6MTY1NTE3ODA1Nn0.IK1TkbZjSR3Zz-btPXwmBTEEvVhmyCznF-dV_3YvUf8
 
 {
     "id_hidroponik": "GFGdgJHjk",

@@ -1,30 +1,31 @@
 const express = require('express');
 const router = express.Router();
+const { authenticateJWT } = require('../middlewares/auth');
 const dataHidroponikController = require('../controllers/dataHidroponikController');
 
 /**
  * Get all hydroponic data
  */
-router.get('/', dataHidroponikController.list);
+router.get('/', authenticateJWT, dataHidroponikController.list);
 
 /**
  * Get hydroponic data by id
  */
-router.get('/:id', dataHidroponikController.show);
+router.get('/:id', authenticateJWT, dataHidroponikController.show);
 
 /**
  * Add hydroponic data
  */
-router.post('/', dataHidroponikController.create);
+router.post('/', authenticateJWT, dataHidroponikController.create);
 
 /**
  * Update hydroponic data
  */
-router.put('/:id', dataHidroponikController.update);
+router.put('/:id', authenticateJWT, dataHidroponikController.update);
 
 /**
  * Delete hydroponic data
  */
-router.delete('/:id', dataHidroponikController.remove);
+router.delete('/:id', authenticateJWT, dataHidroponikController.remove);
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { authenticateJWT } = require('../middlewares/auth');
 const hidroponikController = require('../controllers/hidroponikController');
 
 /**
@@ -10,21 +11,21 @@ const hidroponikController = require('../controllers/hidroponikController');
  /**
   * Get hydroponic system by id
   */
- router.get('/:id', hidroponikController.show);
+ router.get('/:id', authenticateJWT, hidroponikController.show);
  
  /**
   * Add hydroponic system's data
   */
- router.post('/', hidroponikController.create);
+ router.post('/', authenticateJWT, hidroponikController.create);
  
  /**
   * Update hydroponic system's data
   */
- router.put('/:id', hidroponikController.update);
+ router.put('/:id', authenticateJWT, hidroponikController.update);
  
  /**
   * Delete hydroponic system's data
   */
- router.delete('/:id', hidroponikController.remove);
+ router.delete('/:id', authenticateJWT, hidroponikController.remove);
  
  module.exports = router;
