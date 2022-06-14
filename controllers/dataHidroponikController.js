@@ -6,10 +6,8 @@ async function create (req, res) {
     try {
         let data = {
             id_hidroponik: req.body.id_hidroponik,
-            waktu: {
-                date: formatDate(new Date()),
-                time: formatTime(new Date())
-            },
+            date: formatDate(new Date()),
+            time: formatTime(new Date()),
             tds: req.body.tds,
             ph: req.body.ph,
             ec: req.body.ec,
@@ -160,6 +158,54 @@ async function remove (req, res) {
                 code: 404,
                 status: `Can't delete data with id ${id}. Data is not found.`
             })
+        }
+
+    } catch(error) {
+        return res.status(400).json({
+            code: 400,
+            error: error.message
+        })
+    }
+}
+
+async function currentDate (req, res) {
+    try {
+        const id_hidroponik = req.params.id;
+        let currDate = formatDate(new Date());
+
+        let data = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', currDate).get();
+
+        if(data.empty) {
+            return res.status(404).json({
+                code: 404,
+                status: "No hydroponic data found."
+            });
+        } else {
+            data.forEach( doc => {
+                const dataHidroponik = new DataHidroponik(
+                    doc.id,
+                    doc.data().id_hidroponik,
+                    doc.data().waktu,
+                    doc.data().tds,
+                    doc.data().ph,
+                    doc.data().ec,
+                    doc.data().humidity,
+                    doc.data().temperature,
+                    doc.data().light_intense,
+                    doc.data().label,
+                    doc.data().accuracy,
+                    doc.data().action,
+                    doc.data().action_taken
+                );
+
+                dataHidroponikArray.push(dataHidroponik);
+            });
+
+            return res.status(200).json({
+                code: 200,
+                status: `Get all hydroponic data for date ${currDate} successfully.`,
+                data: dataHidroponikArray
+            });
         }
 
     } catch(error) {
