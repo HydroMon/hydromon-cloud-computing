@@ -213,7 +213,7 @@ async function remove (req, res) {
 
 async function currentDate (req, res) {
     try {
-        const id_hidroponik = req.params.id;
+        const id_hidroponik = req.params.id_hidroponik;
         let currDate = formatDate(new Date());
 
         let data = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', currDate).get();

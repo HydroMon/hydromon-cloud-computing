@@ -16,12 +16,12 @@ router.get('/:id', authenticateJWT, dataHidroponikController.show);
 /**
  * Get hydroponic today's data by id
  */
-router.get('/today/:id', authenticateJWT, dataHidroponikController.currentDate);
+router.get('/today/:id_hidroponik', authenticateJWT, dataHidroponikController.currentDate);
 
 /**
- * Get hydroponic data by id
+ * Get newest hydroponic data by id
  */
-router.get('/newest/:id_hidroponik', dataHidroponikController.showNewestData);
+router.get('/newest/:id_hidroponik', authenticateJWT, dataHidroponikController.showNewestData);
 
 /**
  * Add hydroponic data

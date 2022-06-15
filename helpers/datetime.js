@@ -3,7 +3,7 @@ function padTo2Digits(num) {
 }
 
 /**
- * Get today's date in dd/mm/yyyy format
+ * Get today's date in dd.mm.yyyy format
  */
 function formatDate(date) {
     return [
