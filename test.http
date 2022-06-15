@@ -46,3 +46,5 @@ Content-Type: application/json
 }
 
 DELETE http://localhost:5000/data/0F9JOPHK8ST4Rys2eoKo
+
+GET http://localhost:5000/data/newest/GFGdgJHjk
