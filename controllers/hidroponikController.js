@@ -1,6 +1,5 @@
 const { firestore } = require('../helpers/database');
 const Hidroponik = require('../models/hidroponik');
-//const usersCollectionRef = firestore.collection('user');
 
 //function to add new Hidroponik data to the database
 async function create (req, res) {
@@ -8,14 +7,7 @@ async function create (req, res) {
         // saving hidroponik data
         let hidroponik = {
             nama_hidroponik: req.body.nama_hidroponik,
-            lokasi_hidroponik : {
-                jalan: req.body.lokasi_hidroponik.jalan,
-                kelurahan_desa: req.body.lokasi_hidroponik.kelurahan_desa,
-                kabupaten_kota: req.body.lokasi_hidroponik.kabupaten_kota,
-                provinsi: req.body.lokasi_hidroponik.provinsi,
-                latitude: req.body.lokasi_hidroponik.latitude,
-                longitude: req.body.lokasi_hidroponik.longitude
-            },
+            lokasi_hidroponik : req.body.lokasi_hidroponik,
             token_alat: req.body.token_alat,
             createdAt: new Date(),
             updatedAt: new Date()
