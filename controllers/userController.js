@@ -16,7 +16,7 @@ async function create (req, res) {
 
         return res.status(200).json({
             code: 200,
-            status: "User is added successfully."
+            status: "User is added successfully.",
         });
     } catch(error) {
         return res.status(400).json({
@@ -45,7 +45,8 @@ async function list (req, res) {
                     doc.data().password,
                     doc.data().username,
                     doc.data().telepon,
-                    doc.data().role
+                    doc.data().role,
+                    doc.data().id_hidroponik
                 );
 
                 userArray.push(user);
@@ -101,10 +102,12 @@ async function update (req, res) {
 
         if(checkData.exists) {
             await firestore.collection('user').doc(id).update(data);
-    
+            const updatedData = await firestore.collection('user').doc(id).get();
+
             return res.status(200).json({
                 code: 200,
-                status: "User is updated successfully."
+                status: "User is updated successfully.",
+                data: updatedData.data()
             })
         } else {
             return res.status(404).json({
@@ -132,7 +135,7 @@ async function remove (req, res) {
     
             return res.status(200).json({
                 code: 200,
-                status: "User is deleted successfully."
+                status: `User with id ${id} is deleted successfully.`
             })
         } else {
             return res.status(404).json({
