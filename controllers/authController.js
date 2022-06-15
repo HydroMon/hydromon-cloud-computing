@@ -23,16 +23,30 @@ async function registrasi (req, res) {
             password: password,
             username: req.body.username,
             telepon: req.body.telepon,
-            role: 0, // 0 for viewer, 1 for owner
             createdAt: new Date(),
             updatedAt: new Date()
         };
     
         await firestore.collection('user').doc().set(user);
+        let dataUser = await firestore.collection('user').where('email', '==', req.body.email).get();
+        let data;
+        
+        dataUser.forEach( doc => {
+            data = {
+                id: doc.id,
+                nama_lengkap: doc.data().nama_lengkap,
+                email: doc.data().email,
+                password: doc.data().password,
+                username: doc.data().username,
+                telepon: doc.data().telepon,
+                role: doc.data().role
+            }
+        });
         
         return res.status(200).json({
             code: 200,
-            status: "Registration is successful."
+            status: "Registration is successful.",
+            data: data
         });
 
     } catch(error) {
@@ -79,10 +93,14 @@ async function login (req, res) {
 
             const token = jwt.sign({ userToken }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 
+            // get user's data
+            const data = await firestore.collection('user').doc(userData[0].id).get();
+
             return res.status(200).send({
                 code:200,
                 status: "Login is successful.",
-                token: token
+                token: token,
+                data: data.data()
             })
         } else {
             return res.status(422).send({
