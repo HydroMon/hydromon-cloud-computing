@@ -23,7 +23,6 @@ async function registrasi (req, res) {
             password: password,
             username: req.body.username,
             telepon: req.body.telepon,
-            role: 0, // 0 for viewer, 1 for owner
             createdAt: new Date(),
             updatedAt: new Date()
         };

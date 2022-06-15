@@ -10,7 +10,7 @@ function formatDate(date) {
         padTo2Digits(date.getDate()),
         padTo2Digits(date.getMonth() + 1),
         date.getFullYear()
-    ].join('/');
+    ].join('.');
 }
 
 function formatTime(time) {
@@ -18,7 +18,7 @@ function formatTime(time) {
         padTo2Digits(time.getHours()),
         padTo2Digits(time.getMinutes()),
         padTo2Digits(time.getSeconds())
-    ].join('.');
+    ].join(':');
 }
 
 module.exports = {
