@@ -47,6 +47,8 @@ Content-Type: application/json
 
 DELETE http://localhost:5000/data/0F9JOPHK8ST4Rys2eoKo
 
+GET http://localhost:5000/data/newest/GFGdgJHjk
+
 GET http://localhost:5000/data/today/GFGdgJHjk
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyVG9rZW4iOnsiaWQiOiI4c29lRDUzeWFGN2dDbkE1V1NRTiIsImVtYWlsIjoicm9zYWFtYWxpYUBtYWlsLmNvbSIsInVzZXJuYW1lIjoicm9zYWFtYWxpYSJ9LCJpYXQiOjE2NTUyMDg5ODMsImV4cCI6MTY1NTIxMjU4M30.rFhjKg46LK6pX2uda1uxCI904RBvr5YJNGOpfr_nKJ4

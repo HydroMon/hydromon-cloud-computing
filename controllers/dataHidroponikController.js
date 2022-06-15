@@ -82,9 +82,8 @@ async function list (req, res) {
 async function show (req, res) {
     try {
         const id = req.params.id;
-
+        
         const data = await firestore.collection('data_hidroponik').doc(id).get();
-        const subscriber = await firestore.collection('data_hidroponik').doc(id)
 
         if(!data.exists) {
             return res.status(404).json({
@@ -92,17 +91,61 @@ async function show (req, res) {
                 status: `Data with id ${id} is not found.`
             })
         } else {
-            subscriber.onSnapshot(docSnapshot=> {
-                return res.status(200).json({
-                            code: 200,
-                            status: `Data with id ${id} is found.`,
-                            data: docSnapshot.data()
-                        })
-              }, err => {
-                return res.status(500).send(err)
-              });
+            return res.status(200).json({
+                code: 200,
+                status: `Data with id ${id} is found.`,
+                data: data.data()
+            })            
         }
+    } catch(error) {
+        return res.status(400).json({
+            code: 400,
+            status: error.message
+        })
+    }
+}
 
+async function showNewestData (req, res) {
+    try {
+        const id_hidroponik = req.params.id_hidroponik;
+        var dateNow =  formatDate(new Date())
+
+        const newestData = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', dateNow).orderBy('time', 'desc').limit(1).get();
+
+        let dataHidroponikArray = [];
+        if(newestData.empty) {
+            return res.status(404).json({
+                code: 404,
+                status: `Newest data for id ${id_hidroponik} is not found.`
+            })
+        } else {
+            newestData.forEach( doc => {
+                const dataHidroponik = new DataHidroponik(
+                    doc.id,
+                    doc.data().id_hidroponik,
+                    doc.data().date,
+                    doc.data().time,
+                    doc.data().tds,
+                    doc.data().ph,
+                    doc.data().ec,
+                    doc.data().humidity,
+                    doc.data().temperature,
+                    doc.data().light_intense,
+                    doc.data().label,
+                    doc.data().accuracy,
+                    doc.data().action,
+                    doc.data().action_taken
+                );
+
+                dataHidroponikArray.push(dataHidroponik);
+            });
+
+            return res.status(200).json({
+                code: 200,
+                status: `Newest data for id ${id_hidroponik} is found.`,
+                data: dataHidroponikArray
+            })   
+        }
     } catch(error) {
         return res.status(400).json({
             code: 400,
@@ -221,6 +264,7 @@ module.exports = {
     create,
     list,
     show,
+    showNewestData,
     update,
     remove,
     currentDate
