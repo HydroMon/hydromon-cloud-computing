@@ -21,10 +21,31 @@ async function create (req, res) {
         }
 
         await firestore.collection('data_hidroponik').doc().set(data);
+        let dataDataHidroponik = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', req.body.id_hidroponik).get();
+        let dataData;
+        
+        dataDataHidroponik.forEach( doc => {
+            dataData = {
+                id: doc.id,
+                id_hidroponik: doc.data().id_hidroponik,
+                waktu: doc.data().waktu,
+                tds: doc.data().tds,
+                ph: doc.data().ph,
+                ec: doc.data().ec,
+                humidity: doc.data().humidity,
+                temperature: doc.data().temperature,
+                light_intense: doc.data().light_intense,
+                label: doc.data().label,
+                accuracy: doc.data().accuracy,
+                action: doc.data().action,
+                action_taken: doc.data().action_taken
+            }
+        });
 
         return res.status(200).json({
             code: 200,
-            status: "Hydroponic data is added successfully."
+            status: "Hydroponic data is added successfully.",
+            data: dataData
         });
     } catch(error) {
         return res.status(400).json({
@@ -163,10 +184,12 @@ async function update (req, res) {
 
         if(checkData.exists) {
             await firestore.collection('data_hidroponik').doc(id).update(data);
-    
+            const updatedData = await firestore.collection('data_hidroponik').doc(id).get();
+
             return res.status(200).json({
                 code: 200,
-                status: "Hydroponic data is updated successfully."
+                status: "Hydroponic data is updated successfully.",
+                data: updatedData.data()
             })
         } else {
             return res.status(404).json({

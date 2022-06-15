@@ -22,10 +22,23 @@ async function create (req, res) {
         };
 
         await firestore.collection('hidroponiks').doc().set(hidroponik);
+        let dataHidroponik = await firestore.collection('hidroponiks').where('nama_hidroponik', '==', req.body.nama_hidroponik).get();
+        let data;
         
+        dataHidroponik.forEach( doc => {
+            data = {
+                id: doc.id,
+                nama_hidroponik: doc.data().nama_hidroponik,
+                lokasi_hidroponik: doc.data().lokasi_hidroponik,
+                pemilik: doc.data().pemilik,
+                token_alat: doc.data().token_alat
+            }
+        });
+
         return res.status(200).json({
             code: 200,
-            status: "Hydroponic system registered successfully."
+            status: "Hydroponic system registered successfully.",
+            data: data
         });
     } catch (error) {
         return res.status(400).json({
@@ -102,21 +115,23 @@ async function show (req, res) {
 async function update (req, res) {
     try {
         const id = req.params.id;
-        const updatedData = req.body;
-        const hidroponik = await firestore.collection('hidroponiks').doc(id);
-        const data = await hidroponik.get();
+        const data = req.body;
+        const hidroponik = await firestore.collection('hidroponiks').doc(id).get();
+        // const data = await hidroponik.get();
 
-        if(!data.exists) {
+        if(!hidroponik.exists) {
             return res.status(404).json({
                 code: 404,
                 status: `Can't update data with id ${id}. Data is not found.`
             })
         }else {
-            await hidroponik.update(updatedData);
+            await hidroponik.update(data);
+            const updatedData = await firestore.collection('hidroponiks').doc(id).get();
 
             return res.status(200).json({
                 code: 200,
-                status: "Hydroponic data is updated successfully."
+                status: "Hydroponic data is updated successfully.",
+                data: updatedData.data()
             }) 
         }              
     } catch (error) {
