@@ -8,29 +8,18 @@ async function create (req, res) {
         let hidroponik = {
             nama_hidroponik: req.body.nama_hidroponik,
             lokasi_hidroponik : req.body.lokasi_hidroponik,
+            pemilik: req.body.pemilik,
             token_alat: req.body.token_alat,
             createdAt: new Date(),
             updatedAt: new Date()
         };
 
         await firestore.collection('hidroponiks').doc().set(hidroponik);
-        let dataHidroponik = await firestore.collection('hidroponiks').where('nama_hidroponik', '==', req.body.nama_hidroponik).get();
-        let data;
-        
-        dataHidroponik.forEach( doc => {
-            data = {
-                id: doc.id,
-                nama_hidroponik: doc.data().nama_hidroponik,
-                lokasi_hidroponik: doc.data().lokasi_hidroponik,
-                pemilik: doc.data().pemilik,
-                token_alat: doc.data().token_alat
-            }
-        });
 
         return res.status(200).json({
             code: 200,
             status: "Hydroponic system registered successfully.",
-            data: data
+            data: hidroponik
         });
     } catch (error) {
         return res.status(400).json({

@@ -3,13 +3,13 @@ function padTo2Digits(num) {
 }
 
 /**
- * Get today's date in dd.mm.yyyy format
+ * Get today's date in yyyy.m.d format
  */
 function formatDate(date) {
     return [
-        padTo2Digits(date.getDate()),
-        padTo2Digits(date.getMonth() + 1),
-        date.getFullYear()
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
     ].join('.');
 }
 

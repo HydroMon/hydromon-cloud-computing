@@ -5,7 +5,7 @@ const DataHidroponik = require('../models/dataHidroponik');
 async function create (req, res) {
     try {
         let data = {
-            id_hidroponik: req.body.id_hidroponik,
+            token_alat: req.body.token_alat,
             date: formatDate(new Date()),
             time: formatTime(new Date()),
             tds: req.body.tds,
@@ -21,31 +21,11 @@ async function create (req, res) {
         }
 
         await firestore.collection('data_hidroponik').doc().set(data);
-        let dataDataHidroponik = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', req.body.id_hidroponik).get();
-        let dataData;
-        
-        dataDataHidroponik.forEach( doc => {
-            dataData = {
-                id: doc.id,
-                id_hidroponik: doc.data().id_hidroponik,
-                waktu: doc.data().waktu,
-                tds: doc.data().tds,
-                ph: doc.data().ph,
-                ec: doc.data().ec,
-                humidity: doc.data().humidity,
-                temperature: doc.data().temperature,
-                light_intense: doc.data().light_intense,
-                label: doc.data().label,
-                accuracy: doc.data().accuracy,
-                action: doc.data().action,
-                action_taken: doc.data().action_taken
-            }
-        });
 
         return res.status(200).json({
             code: 200,
             status: "Hydroponic data is added successfully.",
-            data: dataData
+            data: data
         });
     } catch(error) {
         return res.status(400).json({
@@ -69,7 +49,7 @@ async function list (req, res) {
             data.forEach( doc => {
                 const dataHidroponik = new DataHidroponik(
                     doc.id,
-                    doc.data().id_hidroponik,
+                    doc.data().token_alat,
                     doc.data().waktu,
                     doc.data().tds,
                     doc.data().ph,
@@ -128,22 +108,22 @@ async function show (req, res) {
 
 async function showNewestData (req, res) {
     try {
-        const id_hidroponik = req.params.id_hidroponik;
+        const token_alat = req.params.token_alat;
         var dateNow =  formatDate(new Date())
 
-        const newestData = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', dateNow).orderBy('time', 'desc').limit(1).get();
+        const newestData = await firestore.collection('data_hidroponik').where('token_alat', '==', token_alat).where('date', '==', dateNow).orderBy('time', 'desc').limit(1).get();
 
         let dataHidroponikArray = [];
         if(newestData.empty) {
             return res.status(404).json({
                 code: 404,
-                status: `Newest data for id ${id_hidroponik} is not found.`
+                status: `Newest data for token_alat ${token_alat} is not found.`
             })
         } else {
             newestData.forEach( doc => {
                 const dataHidroponik = new DataHidroponik(
                     doc.id,
-                    doc.data().id_hidroponik,
+                    doc.data().token_alat,
                     doc.data().date,
                     doc.data().time,
                     doc.data().tds,
@@ -163,7 +143,7 @@ async function showNewestData (req, res) {
 
             return res.status(200).json({
                 code: 200,
-                status: `Newest data for id ${id_hidroponik} is found.`,
+                status: `Newest data for id ${token_alat} is found.`,
                 data: dataHidroponikArray
             })   
         }
@@ -236,10 +216,10 @@ async function remove (req, res) {
 
 async function currentDate (req, res) {
     try {
-        const id_hidroponik = req.params.id_hidroponik;
+        const token_alat = req.params.token_alat;
         let currDate = formatDate(new Date());
 
-        let data = await firestore.collection('data_hidroponik').where('id_hidroponik', '==', id_hidroponik).where('date', '==', currDate).get();
+        let data = await firestore.collection('data_hidroponik').where('token_alat', '==', token_alat).where('date', '==', currDate).get();
 
         let dataHidroponikArray = [];
         if(data.empty) {
@@ -251,7 +231,7 @@ async function currentDate (req, res) {
             data.forEach( doc => {
                 const dataHidroponik = new DataHidroponik(
                     doc.id,
-                    doc.data().id_hidroponik,
+                    doc.data().token_alat,
                     doc.data().waktu,
                     doc.data().tds,
                     doc.data().ph,

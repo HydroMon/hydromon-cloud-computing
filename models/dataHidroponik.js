@@ -1,8 +1,8 @@
 class DataHidroponik {
-    constructor(id, id_hidroponik, date, time, tds, ph,
+    constructor(id, token_alat, date, time, tds, ph,
         ec, humidity, temperature, light_intense, label, accuracy, action, action_taken) {
             this.id = id;
-            this.id_hidroponik = id_hidroponik;
+            this.token_alat = token_alat;
             this.date = date;
             this.time = time;
             this.tds = tds;
