@@ -137,7 +137,7 @@ async function hidroponikByUser (req, res) {
             })
         } else {
             data.forEach( doc => {
-                const dataHidroponik = new DataHidroponik(
+                const dataHidroponik = new Hidroponik(
                     doc.id,
                     doc.data().nama_hidroponik,
                     doc.data().lokasi_hidroponik,
@@ -150,7 +150,7 @@ async function hidroponikByUser (req, res) {
 
             return res.status(200).json({
                 code: 200,
-                status: `Newest data for id ${token_alat} is found.`,
+                status: `Hydroponic set up for id ${user} is found.`,
                 data: hidroponikUser
             })   
         }
