@@ -12,6 +12,10 @@ const hidroponikController = require('../controllers/hidroponikController');
   * Get hydroponic system by id
   */
  router.get('/:id', authenticateJWT, hidroponikController.show);
+  /**
+  * Get hydroponic system by user id
+  */
+   router.get('/getbyuser/:id_user', authenticateJWT, hidroponikController.hidroponikByUser);
  
  /**
   * Add hydroponic system's data
