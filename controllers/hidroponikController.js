@@ -123,6 +123,45 @@ async function update (req, res) {
     }
 }
 
+async function hidroponikByUser (req, res) {
+    try {
+        const user = req.params.id_user;
+
+        const data = await firestore.collection('hidroponiks').where('pemilik', '==', user).get();
+
+        let hidroponikUser = [];
+        if(data.empty) {
+            return res.status(404).json({
+                code: 404,
+                status: `User with id ${user} doesn't have any hidroponik set up.`
+            })
+        } else {
+            data.forEach( doc => {
+                const dataHidroponik = new Hidroponik(
+                    doc.id,
+                    doc.data().nama_hidroponik,
+                    doc.data().lokasi_hidroponik,
+                    doc.data().pemilik,
+                    doc.data().token_alat
+                );
+
+                hidroponikUser.push(dataHidroponik);
+            });
+
+            return res.status(200).json({
+                code: 200,
+                status: `Hydroponic set up for id ${user} is found.`,
+                data: hidroponikUser
+            })   
+        }
+    } catch(error) {
+        return res.status(400).json({
+            code: 400,
+            status: error.message
+        })
+    }
+}
+
 //function to store delete Hidroponik's data from database
 async function remove (req, res) {
     try {
@@ -155,5 +194,6 @@ module.exports = {
     list,
     show,
     update,
+    hidroponikByUser,
     remove
 }
